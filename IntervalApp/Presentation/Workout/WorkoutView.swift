@@ -30,20 +30,15 @@ struct WorkoutView: View {
 
                 Spacer()
 
-                // Bottom: Controls
-                WorkoutControlsView(
-                    currentPace: viewModel.currentPace,
-                    isPaused: viewModel.isPaused,
-                    onTogglePause: { viewModel.togglePause() },
-                    onEndWorkout: { viewModel.endWorkout() }
-                )
+                // Bottom: Controls or Start button
+                bottomSection
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 16)
-        }
-        .onAppear {
-            if case .idle = viewModel.phase {
-                viewModel.startWorkout()
+
+            // Countdown overlay
+            if viewModel.isCountdown {
+                countdownOverlay
             }
         }
         .onChange(of: viewModel.phase) { _, newPhase in
@@ -54,16 +49,97 @@ struct WorkoutView: View {
         }
     }
 
+    // MARK: - Bottom Section
+
+    private var bottomSection: some View {
+        Group {
+            if viewModel.isIdle {
+                startButton
+            } else if !viewModel.isCountdown {
+                WorkoutControlsView(
+                    currentPace: viewModel.currentPace,
+                    isPaused: viewModel.isPaused,
+                    onTogglePause: { viewModel.togglePause() },
+                    onEndWorkout: { viewModel.endWorkout() }
+                )
+            }
+        }
+    }
+
+    // MARK: - Start Button
+
+    private var startButton: some View {
+        Button {
+            viewModel.startWorkout()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "figure.run")
+                    .font(.title2)
+                Text("START")
+                    .font(Theme.buttonText)
+            }
+            .foregroundColor(Theme.foreground)
+            .frame(maxWidth: .infinity, minHeight: 60)
+            .background(Theme.primary)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .accessibilityLabel("Start running")
+    }
+
+    // MARK: - Countdown Overlay
+
+    private var countdownOverlay: some View {
+        ZStack {
+            Theme.background.opacity(0.85).ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                Text("GET READY")
+                    .font(Theme.stateLabel)
+                    .foregroundColor(Theme.mutedForeground)
+
+                Text(viewModel.countdownValue > 0 ? "\(viewModel.countdownValue)" : "GO!")
+                    .font(.system(size: 120, weight: .bold, design: .rounded))
+                    .foregroundColor(viewModel.countdownValue > 0 ? Theme.foreground : Theme.primary)
+                    .contentTransition(.numericText())
+                    .animation(
+                        reduceMotion ? .none : .spring(response: 0.3, dampingFraction: 0.6),
+                        value: viewModel.countdownValue
+                    )
+            }
+        }
+    }
+
     // MARK: - Header Section
 
     private var headerSection: some View {
         VStack(spacing: 12) {
-            stateBadge
+            if !viewModel.isIdle && !viewModel.isCountdown {
+                stateBadge
+            }
 
-            Text("Rep \(viewModel.currentRepNumber) of \(viewModel.config.repCount)")
-                .font(Theme.stateLabel)
-                .foregroundColor(Theme.foreground)
+            if viewModel.isIdle {
+                Text("\(viewModel.config.distance.rawValue) x \(viewModel.config.repCount)")
+                    .font(Theme.stateLabel)
+                    .foregroundColor(Theme.foreground)
 
+                Text("3:00 rest between reps")
+                    .font(Theme.secondaryLabel)
+                    .foregroundColor(Theme.mutedForeground)
+            } else {
+                Text("Rep \(viewModel.currentRepNumber) of \(viewModel.config.repCount)")
+                    .font(Theme.stateLabel)
+                    .foregroundColor(Theme.foreground)
+            }
+
+            // Running: show live rep timer
+            if isRunningPhase {
+                Text(viewModel.formattedRepElapsed)
+                    .font(.system(size: 64, weight: .bold, design: .monospaced))
+                    .foregroundColor(Theme.foreground)
+                    .monospacedDigit()
+            }
+
+            // Recovery: show countdown
             if isRecoveryPhase {
                 Text(PaceCalculator.formatDuration(viewModel.recoveryRemaining))
                     .font(.system(size: 64, weight: .bold, design: .monospaced))
@@ -94,13 +170,8 @@ struct WorkoutView: View {
             return "Running"
         case .recovery:
             return "Recovery"
-        case .paused(let from):
-            switch from {
-            case .running:
-                return "Paused"
-            case .recovery:
-                return "Paused"
-            }
+        case .paused:
+            return "Paused"
         case .completed:
             return "Complete"
         default:
@@ -121,6 +192,13 @@ struct WorkoutView: View {
         default:
             return Theme.muted
         }
+    }
+
+    private var isRunningPhase: Bool {
+        if case .runningRep = viewModel.phase { return true }
+        if case .paused(let from) = viewModel.phase,
+           case .running = from { return true }
+        return false
     }
 
     private var isRecoveryPhase: Bool {

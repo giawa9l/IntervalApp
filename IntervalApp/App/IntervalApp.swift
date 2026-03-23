@@ -31,7 +31,7 @@ struct IntervalApp: App {
                     }
                 }
             }
-            .background(Theme.background.ignoresSafeArea())
+            .preferredColorScheme(.dark)
             .environmentObject(container)
         }
     }

@@ -6,8 +6,10 @@ final class WorkoutViewModel: ObservableObject {
     // MARK: - Published State
 
     @Published var phase: WorkoutPhase = .idle
+    @Published var countdownValue: Int = 5
     @Published var currentDistance: Double = 0
     @Published var repStartTime: Date = .now
+    @Published var repElapsed: TimeInterval = 0
     @Published var recoveryRemaining: TimeInterval = 0
     @Published var elapsedTime: TimeInterval = 0
     @Published private(set) var repResults: [RepResult] = []
@@ -23,6 +25,7 @@ final class WorkoutViewModel: ObservableObject {
 
     // MARK: - Internal State
 
+    private var countdownTask: Task<Void, Never>?
     private var distanceTask: Task<Void, Never>?
     private var timerTask: Task<Void, Never>?
     private var recoveryTask: Task<Void, Never>?
@@ -38,6 +41,7 @@ final class WorkoutViewModel: ObservableObject {
     }
 
     deinit {
+        countdownTask?.cancel()
         distanceTask?.cancel()
         timerTask?.cancel()
         recoveryTask?.cancel()
@@ -46,10 +50,10 @@ final class WorkoutViewModel: ObservableObject {
     // MARK: - Actions
 
     func startWorkout() {
-        workoutStartTime = .now
+        // Transition idle → countdown(5)
         phase = WorkoutStateMachine.transition(from: phase, event: .start, totalReps: config.repCount)
-        beginRep()
-        startElapsedTimer()
+        countdownValue = 5
+        startCountdown()
     }
 
     func completeRep() {
@@ -130,6 +134,13 @@ final class WorkoutViewModel: ObservableObject {
 
     // MARK: - Computed Properties
 
+    var formattedRepElapsed: String {
+        let minutes = Int(repElapsed) / 60
+        let seconds = Int(repElapsed) % 60
+        let tenths = Int((repElapsed - Double(Int(repElapsed))) * 10)
+        return String(format: "%d:%02d.%d", minutes, seconds, tenths)
+    }
+
     var currentPace: String {
         let elapsed = Date().timeIntervalSince(repStartTime)
         guard currentDistance > 0, elapsed > 0 else { return PaceCalculator.formatPace(0) }
@@ -142,8 +153,20 @@ final class WorkoutViewModel: ObservableObject {
         return false
     }
 
+    var isIdle: Bool {
+        if case .idle = phase { return true }
+        return false
+    }
+
+    var isCountdown: Bool {
+        if case .countdown = phase { return true }
+        return false
+    }
+
     var currentRepNumber: Int {
         switch phase {
+        case .countdown:
+            return 1
         case .runningRep(let n):
             return n
         case .recovery(let n, _):
@@ -188,11 +211,43 @@ final class WorkoutViewModel: ObservableObject {
 
     private func beginRep() {
         currentDistance = 0
+        repElapsed = 0
         repStartTime = .now
         pausedRepElapsed = 0
         locationManager.resetDistance()
         locationManager.startTracking()
         startDistanceMonitoring()
+    }
+
+    // MARK: - Private: Countdown
+
+    private func startCountdown() {
+        countdownTask?.cancel()
+        countdownTask = Task { [weak self] in
+            guard let self else { return }
+            var remaining = 5
+
+            while remaining > 0 {
+                guard !Task.isCancelled else { return }
+                self.audioCue.playCountdown()
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                guard !Task.isCancelled else { return }
+                remaining -= 1
+                self.countdownValue = remaining
+                self.phase = .countdown(remaining)
+            }
+
+            // Countdown done → start first rep
+            guard !Task.isCancelled else { return }
+            self.phase = WorkoutStateMachine.transition(
+                from: self.phase,
+                event: .countdownDone,
+                totalReps: self.config.repCount
+            )
+            self.workoutStartTime = .now
+            self.beginRep()
+            self.startElapsedTimer()
+        }
     }
 
     // MARK: - Private: Distance Monitoring
@@ -263,9 +318,12 @@ final class WorkoutViewModel: ObservableObject {
         timerTask = Task { [weak self] in
             guard let self else { return }
             while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                try? await Task.sleep(nanoseconds: 100_000_000) // 10Hz for smooth timer
                 guard !Task.isCancelled else { return }
                 self.elapsedTime = Date().timeIntervalSince(self.workoutStartTime)
+                if case .runningRep = self.phase {
+                    self.repElapsed = Date().timeIntervalSince(self.repStartTime)
+                }
             }
         }
     }
@@ -287,7 +345,13 @@ final class WorkoutViewModel: ObservableObject {
         recoveryTask = nil
     }
 
+    private func cancelCountdownTask() {
+        countdownTask?.cancel()
+        countdownTask = nil
+    }
+
     private func cancelAllTasks() {
+        cancelCountdownTask()
         cancelDistanceTask()
         cancelTimerTask()
         cancelRecoveryTask()

@@ -7,28 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000010000000000000001 /* IntervalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000001; };
-		A10000010000000000000002 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000002; };
-		A10000010000000000000003 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000003; };
-		A10000010000000000000004 /* WorkoutConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000004; };
-		A10000010000000000000005 /* WorkoutState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000005; };
-		A10000010000000000000006 /* RepResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000006; };
-		A10000010000000000000007 /* WorkoutSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000007; };
-		A10000010000000000000008 /* WorkoutStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000008; };
-		A10000010000000000000009 /* PaceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000009; };
-		A1000001000000000000000A /* LocationTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000A; };
-		A1000001000000000000000B /* AudioCuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000B; };
-		A1000001000000000000000C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000C; };
-		A1000001000000000000000D /* AudioCueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000D; };
-		A1000001000000000000000E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000E; };
-		A1000001000000000000000F /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000F; };
-		A10000010000000000000010 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000010; };
-		A10000010000000000000011 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000011; };
-		A10000010000000000000012 /* RepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000012; };
-		A10000010000000000000013 /* WorkoutControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000013; };
-		A10000010000000000000014 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000014; };
-		A10000010000000000000015 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000015; };
-		A10000010000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000016; };
+		A10000010000000000000001 /* IntervalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000001 /* IntervalApp.swift */; };
+		A10000010000000000000002 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000002 /* DIContainer.swift */; };
+		A10000010000000000000003 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000003 /* Theme.swift */; };
+		A10000010000000000000004 /* WorkoutConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000004 /* WorkoutConfig.swift */; };
+		A10000010000000000000005 /* WorkoutState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000005 /* WorkoutState.swift */; };
+		A10000010000000000000006 /* RepResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000006 /* RepResult.swift */; };
+		A10000010000000000000007 /* WorkoutSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000007 /* WorkoutSummary.swift */; };
+		A10000010000000000000008 /* WorkoutStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000008 /* WorkoutStateMachine.swift */; };
+		A10000010000000000000009 /* PaceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000009 /* PaceCalculator.swift */; };
+		A1000001000000000000000A /* LocationTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000A /* LocationTracking.swift */; };
+		A1000001000000000000000B /* AudioCuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000B /* AudioCuePlayer.swift */; };
+		A1000001000000000000000C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000C /* LocationManager.swift */; };
+		A1000001000000000000000D /* AudioCueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000D /* AudioCueManager.swift */; };
+		A1000001000000000000000E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000E /* SetupView.swift */; };
+		A1000001000000000000000F /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000F /* SetupViewModel.swift */; };
+		A10000010000000000000010 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000010 /* WorkoutView.swift */; };
+		A10000010000000000000011 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000011 /* WorkoutViewModel.swift */; };
+		A10000010000000000000012 /* RepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000012 /* RepProgressBar.swift */; };
+		A10000010000000000000013 /* WorkoutControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000013 /* WorkoutControlsView.swift */; };
+		A10000010000000000000014 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000014 /* SummaryView.swift */; };
+		A10000010000000000000015 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000015 /* SummaryViewModel.swift */; };
+		A10000010000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000016 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,20 +68,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E10000010000000000000001 /* Root */ = {
+		E10000010000000000000001 = {
 			isa = PBXGroup;
 			children = (
 				E10000010000000000000002 /* IntervalApp */,
 				E10000010000000000000099 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		E10000010000000000000099 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C10000010000000000000001 /* IntervalApp.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		E10000010000000000000002 /* IntervalApp */ = {
@@ -193,6 +185,14 @@
 			path = Summary;
 			sourceTree = "<group>";
 		};
+		E10000010000000000000099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C10000010000000000000001 /* IntervalApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -236,7 +236,7 @@
 				en,
 				Base,
 			);
-			mainGroup = E10000010000000000000001 /* Root */;
+			mainGroup = E10000010000000000000001;
 			productRefGroup = E10000010000000000000099 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -413,7 +413,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3T5Z4HS44C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IntervalApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Interval;
@@ -421,8 +421,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -445,7 +445,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3T5Z4HS44C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IntervalApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Interval;
@@ -453,8 +453,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,15 +473,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F10000010000000000000006 /* Build configuration list for PBXProject "IntervalApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F10000010000000000000007 /* Debug */,
-				F10000010000000000000008 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		F10000010000000000000004 /* Build configuration list for PBXNativeTarget "IntervalApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -491,8 +482,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		F10000010000000000000006 /* Build configuration list for PBXProject "IntervalApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000010000000000000007 /* Debug */,
+				F10000010000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = F10000010000000000000005 /* Project object */;
 }

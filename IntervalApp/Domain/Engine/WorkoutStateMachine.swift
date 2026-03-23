@@ -9,6 +9,9 @@ struct WorkoutStateMachine {
     ) -> WorkoutPhase {
         switch (state, event) {
         case (.idle, .start):
+            return .countdown(5)
+
+        case (.countdown, .countdownDone):
             return .runningRep(1)
 
         case (.runningRep(let n), .repCompleted):
