@@ -3,7 +3,7 @@ import SwiftUI
 enum RepBarState: Equatable {
     case notStarted
     case inProgress(progress: Double)
-    case completed
+    case completed(pace: String)
 }
 
 struct RepProgressBar: View {
@@ -50,6 +50,17 @@ struct RepProgressBar: View {
                 color: isActive ? Theme.ring.opacity(0.4) : .clear,
                 radius: isActive ? 6 : 0
             )
+
+            // Pace label for completed reps
+            if case .completed(let pace) = state {
+                Text(pace)
+                    .font(.caption.weight(.semibold).monospacedDigit())
+                    .foregroundColor(Theme.success)
+                    .frame(width: 80, alignment: .trailing)
+            } else {
+                Color.clear
+                    .frame(width: 80)
+            }
         }
     }
 

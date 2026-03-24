@@ -142,10 +142,23 @@ final class WorkoutViewModel: ObservableObject {
     }
 
     var currentPace: String {
-        let elapsed = Date().timeIntervalSince(repStartTime)
-        guard currentDistance > 0, elapsed > 0 else { return PaceCalculator.formatPace(0) }
-        let pace = PaceCalculator.pacePerKm(distance: currentDistance, duration: elapsed)
-        return PaceCalculator.formatPace(pace)
+        switch phase {
+        case .runningRep:
+            // Live pace from tracked repElapsed (updated at 10Hz) and GPS distance
+            guard currentDistance > 0, repElapsed > 0 else { return PaceCalculator.formatPace(0) }
+            let pace = PaceCalculator.pacePerKm(distance: currentDistance, duration: repElapsed)
+            return PaceCalculator.formatPace(pace)
+
+        case .recovery, .paused:
+            // Show last completed rep's pace
+            if let lastRep = repResults.last {
+                return PaceCalculator.formatPace(lastRep.pacePerKm)
+            }
+            return PaceCalculator.formatPace(0)
+
+        default:
+            return PaceCalculator.formatPace(0)
+        }
     }
 
     var isPaused: Bool {
@@ -184,10 +197,9 @@ final class WorkoutViewModel: ObservableObject {
     }
 
     func repBarState(for rep: Int) -> RepBarState {
-        let completedIds = Set(repResults.map(\.id))
-
-        if completedIds.contains(rep) {
-            return .completed
+        if let result = repResults.first(where: { $0.id == rep }) {
+            let paceText = PaceCalculator.formatPace(result.pacePerKm)
+            return .completed(pace: paceText)
         }
 
         if case .runningRep(let n) = phase, rep == n {
