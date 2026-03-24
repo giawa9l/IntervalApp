@@ -5,14 +5,15 @@ A minimal iOS interval running timer for 400m/800m track repeats. Built with Swi
 ## Features
 
 - **400m / 800m intervals** with configurable rep count (1-8)
-- **GPS distance tracking** via Core Location — auto-completes reps when distance is reached
+- **Pedometer distance tracking** via CMPedometer — auto-completes reps when distance is reached (works indoors)
 - **5-second countdown** before first rep starts
 - **Live rep timer** with 1/10s precision while running
 - **3-minute recovery timer** between reps with audio countdown
 - **Progress bars** showing rep status (not started / in progress / completed)
-- **Pace display** (min/km) updated in real-time
+- **Pace display** (min/km) updated in real-time, accurate across pause/resume
+- **Per-rep pace labels** on completed progress bars
 - **Haptic feedback** on rep complete and workout complete
-- **Post-workout summary** with per-rep splits, fastest/slowest highlighting
+- **Post-workout summary** with hero average pace, per-rep splits with visual pace bars, fastest/slowest highlighting
 
 ## Screenshots
 
@@ -31,7 +32,7 @@ IntervalApp/
     Models/      # WorkoutConfig, WorkoutState, RepResult, WorkoutSummary
     Engine/      # WorkoutStateMachine (pure), PaceCalculator
     Protocols/   # LocationTracking, AudioCuePlayer
-  Data/          # LocationManager (CLLocationManager), AudioCueManager
+  Data/          # PedometerManager (CMPedometer), AudioCueManager
   Presentation/
     Setup/       # Distance picker, rep stepper
     Workout/     # Live workout screen, progress bars, controls
@@ -41,7 +42,7 @@ IntervalApp/
 **Key design decisions:**
 - Pure state machine (`WorkoutStateMachine`) with no side effects — all transitions are deterministic
 - Protocol-first hardware abstraction (`LocationTracking`, `AudioCuePlayer`)
-- `AsyncStream<Double>` for reactive GPS distance updates
+- `AsyncStream<Double>` for reactive pedometer distance updates
 - No persistence for MVP — summary lives in memory only
 
 ## State Machine
@@ -68,7 +69,7 @@ any ──endWorkout──► completed
 
 - iOS 17.0+
 - Xcode 16+
-- Physical device recommended for GPS tracking (simulator supports location simulation)
+- Physical device required for pedometer distance tracking
 
 ## Build
 
