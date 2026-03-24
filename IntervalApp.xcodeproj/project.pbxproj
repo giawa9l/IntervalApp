@@ -29,6 +29,7 @@
 		A10000010000000000000014 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000014 /* SummaryView.swift */; };
 		A10000010000000000000015 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000015 /* SummaryViewModel.swift */; };
 		A10000010000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000016 /* Assets.xcassets */; };
+		A10000010000000000000017 /* PedometerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000017 /* PedometerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		B10000010000000000000014 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		B10000010000000000000015 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
 		B10000010000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000010000000000000017 /* PedometerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerManager.swift; sourceTree = "<group>"; };
 		C10000010000000000000001 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -79,7 +81,7 @@
 		E10000010000000000000002 /* IntervalApp */ = {
 			isa = PBXGroup;
 			children = (
-				E10000010000000000000003 /* App */,
+					E10000010000000000000003 /* App */,
 				E10000010000000000000004 /* Domain */,
 				E10000010000000000000008 /* Data */,
 				E10000010000000000000009 /* Presentation */,
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				B1000001000000000000000C /* LocationManager.swift */,
+				B10000010000000000000017 /* PedometerManager.swift */,
 				B1000001000000000000000D /* AudioCueManager.swift */,
 			);
 			path = Data;
@@ -283,6 +286,7 @@
 				A10000010000000000000013 /* WorkoutControlsView.swift in Sources */,
 				A10000010000000000000014 /* SummaryView.swift in Sources */,
 				A10000010000000000000015 /* SummaryViewModel.swift in Sources */,
+				A10000010000000000000017 /* PedometerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

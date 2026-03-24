@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Interval needs your location to track running distance and calculate pace during workouts.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Interval uses motion sensors to track your steps and running distance.</string>
+</dict>
 </plist>

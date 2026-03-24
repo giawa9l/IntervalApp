@@ -5,7 +5,7 @@ final class DIContainer: ObservableObject {
     let audioCueManager: AudioCuePlayer
 
     init() {
-        self.locationManager = LocationManager()
+        self.locationManager = PedometerManager()
         self.audioCueManager = AudioCueManager()
     }
 }

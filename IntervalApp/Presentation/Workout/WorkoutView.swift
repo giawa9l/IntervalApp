@@ -55,7 +55,7 @@ struct WorkoutView: View {
         Group {
             if viewModel.isIdle {
                 startButton
-            } else if !viewModel.isCountdown {
+            } else if !viewModel.isCountdown, !viewModel.isCompleted {
                 WorkoutControlsView(
                     currentPace: viewModel.currentPace,
                     isPaused: viewModel.isPaused,

@@ -126,10 +126,20 @@ final class WorkoutViewModel: ObservableObject {
     }
 
     func endWorkout() {
-        phase = WorkoutStateMachine.transition(from: phase, event: .endWorkout, totalReps: config.repCount)
+        // Save current in-progress rep if any distance was covered
+        if currentRepNumber > 0, repElapsed > 0, !repResults.contains(where: { $0.id == currentRepNumber }) {
+            let result = RepResult(
+                id: currentRepNumber,
+                distance: currentDistance,
+                duration: repElapsed
+            )
+            repResults.append(result)
+        }
+
         locationManager.stopTracking()
         cancelAllTasks()
         audioCue.playWorkoutComplete()
+        phase = WorkoutStateMachine.transition(from: phase, event: .endWorkout, totalReps: config.repCount)
     }
 
     // MARK: - Computed Properties
@@ -163,6 +173,11 @@ final class WorkoutViewModel: ObservableObject {
 
     var isPaused: Bool {
         if case .paused = phase { return true }
+        return false
+    }
+
+    var isCompleted: Bool {
+        if case .completed = phase { return true }
         return false
     }
 

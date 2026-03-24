@@ -1,4 +1,4 @@
-import CoreLocation
+import Foundation
 
 protocol LocationTracking: AnyObject {
     var distanceStream: AsyncStream<Double> { get }

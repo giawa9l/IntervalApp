@@ -15,100 +15,144 @@ struct SummaryView: View {
             Theme.background.ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 24) {
-                    headerCard
-
-                    repList
-
+                VStack(spacing: 32) {
+                    heroSection
+                    statsRow
+                    splitsSection
                     doneButton
                 }
                 .padding(.horizontal, 24)
-                .padding(.vertical, 16)
+                .padding(.vertical, 24)
             }
         }
     }
 
-    // MARK: - Header Card
+    // MARK: - Hero: Average Pace
 
-    private var headerCard: some View {
-        HStack(spacing: 0) {
-            statColumn(label: "Total Time", value: viewModel.formattedTotalTime)
-            Spacer()
-            statColumn(label: "Distance", value: viewModel.formattedTotalDistance)
-            Spacer()
-            statColumn(label: "Avg Pace", value: viewModel.formattedAveragePace)
+    private var heroSection: some View {
+        VStack(spacing: 8) {
+            Text(viewModel.workoutLabel)
+                .font(.callout.weight(.semibold))
+                .foregroundColor(Theme.mutedForeground)
+                .textCase(.uppercase)
+                .tracking(1.5)
+
+            Text(viewModel.formattedAveragePace)
+                .font(.system(size: 56, weight: .bold, design: .monospaced))
+                .foregroundColor(Theme.foreground)
+
+            Text("avg pace")
+                .font(.caption)
+                .foregroundColor(Theme.mutedForeground)
+                .textCase(.uppercase)
+                .tracking(1)
         }
-        .padding(24)
-        .background(Theme.card)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.top, 16)
     }
 
-    private func statColumn(label: String, value: String) -> some View {
-        VStack(spacing: 8) {
-            Text(label)
-                .font(Theme.secondaryLabel)
-                .foregroundColor(Theme.mutedForeground)
+    // MARK: - Stats Row
 
+    private var statsRow: some View {
+        HStack(spacing: 0) {
+            miniStat(value: viewModel.formattedTotalTime, label: "Time")
+            divider
+            miniStat(value: viewModel.formattedTotalDistance, label: "Distance")
+            divider
+            miniStat(value: "\(viewModel.summary.reps.count)", label: "Reps")
+        }
+        .padding(.vertical, 16)
+        .background(Theme.card)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func miniStat(value: String, label: String) -> some View {
+        VStack(spacing: 4) {
             Text(value)
-                .font(Theme.paceDisplay)
+                .font(.system(.title3, design: .monospaced).weight(.semibold))
                 .foregroundColor(Theme.foreground)
-                .minimumScaleFactor(0.7)
-                .lineLimit(1)
+            Text(label)
+                .font(.caption2)
+                .foregroundColor(Theme.mutedForeground)
+                .textCase(.uppercase)
+                .tracking(0.5)
         }
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Rep List
+    private var divider: some View {
+        Rectangle()
+            .fill(Theme.border)
+            .frame(width: 1, height: 32)
+    }
 
-    private var repList: some View {
-        VStack(spacing: 8) {
+    // MARK: - Splits
+
+    private var splitsSection: some View {
+        VStack(spacing: 0) {
+            // Header
+            HStack {
+                Text("Splits")
+                    .font(.headline.weight(.semibold))
+                    .foregroundColor(Theme.foreground)
+                Spacer()
+            }
+            .padding(.bottom, 16)
+
+            // Column headers
+            HStack(spacing: 0) {
+                Text("#")
+                    .frame(width: 28, alignment: .leading)
+                Text("Pace")
+                    .frame(width: 76, alignment: .leading)
+                // Bar takes remaining space
+                Spacer()
+                Text("Time")
+                    .frame(width: 52, alignment: .trailing)
+            }
+            .font(.caption2.weight(.medium))
+            .foregroundColor(Theme.mutedForeground)
+            .textCase(.uppercase)
+            .tracking(0.5)
+            .padding(.bottom, 8)
+
+            // Rows
             ForEach(viewModel.summary.reps) { rep in
-                repRow(rep)
+                splitRow(rep)
             }
         }
     }
 
-    private func repRow(_ rep: RepResult) -> some View {
-        HStack {
-            Text("Rep \(rep.id)")
-                .font(.body.weight(.semibold))
-                .foregroundColor(accentColor(for: rep))
+    private func splitRow(_ rep: RepResult) -> some View {
+        let color = viewModel.barColor(for: rep)
 
-            Spacer()
+        return HStack(spacing: 0) {
+            // Rep number
+            Text("\(rep.id)")
+                .font(.subheadline.weight(.semibold).monospacedDigit())
+                .foregroundColor(color)
+                .frame(width: 28, alignment: .leading)
 
-            Text(viewModel.formattedDuration(for: rep))
-                .font(.body.monospacedDigit())
-                .foregroundColor(Theme.foreground)
-
+            // Pace
             Text(viewModel.formattedPace(for: rep))
-                .font(Theme.secondaryLabel.monospacedDigit())
+                .font(.subheadline.weight(.medium).monospacedDigit())
+                .foregroundColor(Theme.foreground)
+                .frame(width: 76, alignment: .leading)
+
+            // Bar
+            GeometryReader { geo in
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(color.opacity(0.8))
+                    .frame(width: geo.size.width * viewModel.barRatio(for: rep))
+            }
+            .frame(height: 20)
+
+            // Duration
+            Text(viewModel.formattedDuration(for: rep))
+                .font(.subheadline.monospacedDigit())
                 .foregroundColor(Theme.mutedForeground)
-                .frame(width: 100, alignment: .trailing)
+                .frame(width: 52, alignment: .trailing)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(Theme.card)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(accentBorderColor(for: rep), lineWidth: isFastestOrSlowest(rep) ? 1.5 : 0)
-        )
-    }
-
-    private func accentColor(for rep: RepResult) -> Color {
-        if viewModel.isFastest(rep) { return Theme.success }
-        if viewModel.isSlowest(rep) { return Theme.secondary }
-        return Theme.foreground
-    }
-
-    private func accentBorderColor(for rep: RepResult) -> Color {
-        if viewModel.isFastest(rep) { return Theme.success.opacity(0.5) }
-        if viewModel.isSlowest(rep) { return Theme.secondary.opacity(0.5) }
-        return .clear
-    }
-
-    private func isFastestOrSlowest(_ rep: RepResult) -> Bool {
-        viewModel.isFastest(rep) || viewModel.isSlowest(rep)
+        .padding(.vertical, 6)
     }
 
     // MARK: - Done Button
@@ -118,9 +162,9 @@ struct SummaryView: View {
             Text("DONE")
                 .font(Theme.buttonText)
                 .foregroundColor(Theme.foreground)
-                .frame(maxWidth: .infinity, minHeight: 60)
+                .frame(maxWidth: .infinity, minHeight: 56)
                 .background(Theme.primary)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
         }
         .accessibilityLabel("Done, return to setup")
         .padding(.top, 8)
