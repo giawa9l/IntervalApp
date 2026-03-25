@@ -79,6 +79,28 @@ xcodebuild -scheme IntervalApp \
   build
 ```
 
+## Changelog
+
+### v1.3.1
+- Fixed progress bars freezing after pause/resume or starting a new workout session
+- Fixed pace display climbing indefinitely when distance stream stalled
+- Root cause: `AsyncStream` single-consumer race condition — now creates fresh stream per tracking session
+- Fixed call order: `startTracking()` before `startDistanceMonitoring()` on resume
+
+### v1.3
+- Fixed distance accumulation across pause/resume cycles in CMPedometer
+
+### v1.2
+- CMPedometer distance tracking (replaces GPS, works indoors)
+- Redesigned summary screen with hero pace and per-rep split bars
+- Fixed workout termination saving in-progress rep data
+
+### v1.1
+- Countdown timer, live rep elapsed display, dark mode enforcement
+
+### v1.0
+- Initial release — interval timer with 400m/800m support
+
 ## License
 
 MIT

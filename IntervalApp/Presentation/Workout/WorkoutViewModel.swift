@@ -112,8 +112,8 @@ final class WorkoutViewModel: ObservableObject {
             case .running:
                 // Restore rep start time accounting for already-elapsed time
                 repStartTime = Date().addingTimeInterval(-pausedRepElapsed)
-                startDistanceMonitoring()
                 locationManager.startTracking()
+                startDistanceMonitoring()
 
             case .recovery(_, let remaining):
                 recoveryRemaining = remaining

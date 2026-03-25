@@ -8,20 +8,21 @@ final class PedometerManager: LocationTracking {
     private var accumulatedDistance: Double = 0
     private var lastSegmentDistance: Double = 0
 
-    lazy var distanceStream: AsyncStream<Double> = {
-        AsyncStream { [weak self] continuation in
-            self?.continuation = continuation
-        }
-    }()
+    private(set) var distanceStream: AsyncStream<Double> = AsyncStream { _ in }
 
     // MARK: - LocationTracking
 
     func startTracking() {
         guard CMPedometer.isDistanceAvailable() else { return }
 
+        // Fresh stream each session so new `for await` loops always receive values
+        let (stream, continuation) = AsyncStream.makeStream(of: Double.self)
+        self.distanceStream = stream
+        self.continuation = continuation
+
         lastSegmentDistance = 0
-        repStartDate = .now
-        pedometer.startUpdates(from: repStartDate) { [weak self] data, error in
+        let startDate = Date.now
+        pedometer.startUpdates(from: startDate) { [weak self] data, error in
             guard let self, let data, error == nil else { return }
             let meters = data.distance?.doubleValue ?? 0
             self.lastSegmentDistance = meters
@@ -39,6 +40,5 @@ final class PedometerManager: LocationTracking {
         pedometer.stopUpdates()
         accumulatedDistance = 0
         lastSegmentDistance = 0
-        continuation?.yield(0)
     }
 }
